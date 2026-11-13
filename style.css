@@ -1,0 +1,680 @@
+/* =============================================================
+   STYLE.CSS – Das Design der Webseite
+   Angelehnt an das shadcn/ui-Preset "Zinc" (schlicht, modern).
+   ============================================================= */
+
+
+/* -------------------------------------------------------------
+   1. FARBEN & GRUNDWERTE (Design-Variablen)
+   Variablen beginnen mit "--". Man definiert sie einmal hier
+   und benutzt sie überall mit var(--name).
+   Vorteil: Farbe einmal ändern = überall geändert!
+   ------------------------------------------------------------- */
+:root {
+  /* Helles Design (Standard) – Werte aus dem shadcn-Preset "Zinc" */
+  --background: hsl(0 0% 100%);          /* Seitenhintergrund: weiß */
+  --foreground: hsl(240 10% 3.9%);       /* Textfarbe: fast schwarz */
+  --card: hsl(0 0% 100%);                /* Hintergrund der Karten */
+  --muted: hsl(240 4.8% 95.9%);          /* gedämpfte Flächen (z. B. Badges) */
+  --muted-foreground: hsl(240 3.8% 46.1%); /* gedämpfter, grauer Text */
+  --border: hsl(240 5.9% 90%);           /* Rahmenfarbe */
+  --primary: hsl(295, 29%, 48%);          /* Hauptfarbe für Buttons */
+  --primary-foreground: hsl(0 0% 98%);   /* Textfarbe auf Haupt-Buttons */
+  --ring: hsl(240 5.9% 10%);             /* Fokus-Rahmen (Tastatur-Bedienung) */
+
+  --radius: 0.5rem;                      /* Eckenrundung (shadcn-Standard) */
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-hover: 0 10px 25px -5px rgb(0 0 0 / 0.10);
+}
+
+/* Dunkles Design: Diese Werte gelten, wenn am <html>-Tag
+   data-theme="dark" steht (wird von script.js gesetzt). */
+[data-theme="dark"] {
+  --background: hsl(240 10% 3.9%);
+  --foreground: hsl(0 0% 98%);
+  --card: hsl(240 10% 5.5%);
+  --muted: hsl(240 3.7% 15.9%);
+  --muted-foreground: hsl(240 5% 64.9%);
+  --border: hsl(240 3.7% 15.9%);
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(240 5.9% 10%);
+  --ring: hsl(240 4.9% 83.9%);
+  --shadow: none;
+  --shadow-hover: 0 10px 25px -5px rgb(0 0 0 / 0.5);
+}
+
+
+/* -------------------------------------------------------------
+   2. GRUNDEINSTELLUNGEN (Reset)
+   ------------------------------------------------------------- */
+
+/* box-sizing: border-box = Rahmen und Innenabstand zählen zur Breite.
+   Das macht das Rechnen mit Größen viel einfacher. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sanftes Scrollen, wenn man auf einen Navigations-Link klickt.
+   scroll-padding-top verhindert, dass der Sticky-Header Überschriften verdeckt. */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;     /* Schrift wirkt auf dem Mac schärfer */
+  transition: background-color 0.3s, color 0.3s; /* sanfter Wechsel hell/dunkel */
+}
+
+a {
+  color: inherit;          /* Links übernehmen die Textfarbe */
+  text-decoration: none;   /* keine Unterstreichung */
+}
+
+/* Container: begrenzt die Breite des Inhalts und zentriert ihn.
+   Auf dem Handy bleibt links und rechts 16px Abstand. */
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+
+/* -------------------------------------------------------------
+   3. WIEDERVERWENDBARE BAUSTEINE (wie shadcn-Komponenten)
+   ------------------------------------------------------------- */
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s, transform 0.1s;
+}
+
+/* Kleiner "Drück"-Effekt beim Klicken */
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* Sichtbarer Rahmen, wenn man mit der Tab-Taste navigiert (Barrierefreiheit) */
+.btn:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Haupt-Button: dunkel gefüllt */
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* Umriss-Button: nur Rahmen */
+.btn-outline {
+  border-color: var(--border);
+  background-color: var(--background);
+}
+.btn-outline:hover {
+  background-color: var(--muted);
+}
+
+/* "Geister"-Button: unsichtbar, bis man darüberfährt */
+.btn-ghost:hover {
+  background-color: var(--muted);
+}
+
+/* Quadratischer Button nur mit Icon */
+.btn-icon {
+  width: 2.5rem;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+/* Kleinere Button-Variante */
+.btn-sm {
+  height: 2.25rem;
+  padding: 0 0.85rem;
+}
+
+/* --- Badge (kleines Etikett) --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 999px;          /* komplett rund */
+  border: 1px solid var(--border);
+  background-color: var(--muted);
+  color: var(--foreground);
+}
+
+/* --- Card (Karte) --- */
+.card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+
+/* -------------------------------------------------------------
+   4. KOPFBEREICH (Header)
+   ------------------------------------------------------------- */
+.site-header {
+  position: sticky;             /* bleibt oben "kleben" */
+  top: 0;
+  z-index: 10;                  /* liegt über dem restlichen Inhalt */
+  border-bottom: 1px solid var(--border);
+  /* Halbdurchsichtiger Hintergrund + Unschärfe = moderner "Glas"-Effekt */
+  background-color: color-mix(in srgb, var(--background) 80%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.header-inner {
+  display: flex;                /* Elemente nebeneinander anordnen */
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Navigation – zuerst die HANDY-Ansicht (mobile first):
+   Das Menü ist versteckt und klappt unter dem Header auf. */
+.nav {
+  display: none;
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  padding: 0.5rem 16px 1rem;
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Wenn script.js die Klasse "open" hinzufügt, wird das Menü sichtbar */
+.nav.open {
+  display: flex;
+}
+
+.nav a {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  border-radius: var(--radius);
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.nav a:hover {
+  color: var(--foreground);
+  background-color: var(--muted);
+}
+
+/* Sonne/Mond-Icon: Im hellen Modus zeigen wir den Mond (zum Wechseln
+   auf dunkel), im dunklen Modus die Sonne. */
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-sun { display: inline; }
+[data-theme="dark"] .icon-moon { display: none; }
+
+
+/* -------------------------------------------------------------
+   5. HERO-BEREICH
+   ------------------------------------------------------------- */
+.hero {
+  padding: 4rem 0 3rem;
+  text-align: center;
+}
+
+.hero-title {
+  margin: 1.25rem 0 1rem;
+  /* clamp(min, ideal, max): Schrift wächst mit der Bildschirmbreite,
+     bleibt aber zwischen 2rem und 3.5rem */
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+/* Farbverlauf im Namen */
+.highlight {
+  background: linear-gradient(90deg, var(--foreground), var(--muted-foreground));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-text {
+  max-width: 560px;
+  margin: 0 auto 2rem;
+  font-size: 1.05rem;
+  color: var(--muted-foreground);
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;              /* auf schmalen Handys untereinander */
+  gap: 0.75rem;
+}
+
+
+/* -------------------------------------------------------------
+   6. ABSCHNITTE (Über mich & Hobbys)
+   ------------------------------------------------------------- */
+.section {
+  padding: 3rem 0;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  margin-bottom: 1.5rem;
+  color: var(--muted-foreground);
+}
+
+/* --- Über mich --- */
+.about-card {
+  display: flex;
+  flex-direction: column;       /* Handy: Avatar über dem Text */
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.about-card p {
+  margin-bottom: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.avatar {
+  flex-shrink: 0;               /* Avatar soll nicht gequetscht werden */
+  display: grid;
+  place-items: center;          /* Initialen genau in die Mitte */
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;           /* Kreis */
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* --- Hobbys --- */
+.hobby-grid {
+  display: grid;
+  grid-template-columns: 1fr;   /* Handy: 1 Spalte */
+  gap: 1rem;
+}
+
+.hobby-card:hover {
+  transform: translateY(-4px);  /* Karte hebt sich beim Drüberfahren leicht an */
+  box-shadow: var(--shadow-hover);
+}
+
+.hobby-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  border-radius: var(--radius);
+  background-color: var(--muted);
+}
+
+.hobby-card h3 {
+  margin-bottom: 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.hobby-card p {
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+
+
+/* -------------------------------------------------------------
+   NEU: SCROLL-FORTSCHRITTSBALKEN
+   Liegt fest ("fixed") ganz oben über allem anderen.
+   script.js setzt die Breite von 0 % bis 100 %.
+   ------------------------------------------------------------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;                  /* höher als der Header (10) → liegt darüber */
+  width: 0%;                    /* Startwert: noch nichts gescrollt */
+  height: 3px;
+  background-color: var(--primary);
+  border-radius: 0 999px 999px 0; /* rechtes Ende abgerundet */
+}
+
+
+/* -------------------------------------------------------------
+   NEU: SKILLS MIT BALKEN
+   ------------------------------------------------------------- */
+.skills-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;                 /* Abstand zwischen den Skills */
+}
+
+/* Zeile über dem Balken: Name links, Prozent rechts */
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.skill-percent {
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums; /* Ziffern gleich breit → wirkt ordentlicher */
+}
+
+/* Der graue Hintergrund des Balkens ("Schiene") */
+.skill-bar {
+  height: 0.5rem;
+  border-radius: 999px;
+  background-color: var(--muted);
+  overflow: hidden;             /* nichts ragt über die runden Enden hinaus */
+}
+
+/* Der farbige, gefüllte Teil. Startet bei 0 Breite … */
+.skill-fill {
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--primary);
+  transition: width 1.2s ease-out 0.2s; /* Dauer, Ablauf, kurze Verzögerung */
+}
+
+/* … und wächst auf den Wert aus --level, sobald der Abschnitt
+   die Klasse "visible" bekommt (das macht script.js beim Scrollen). */
+.reveal.visible .skill-fill {
+  width: var(--level);
+}
+
+
+/* -------------------------------------------------------------
+   NEU: LIVE-WETTER (kleine Infobox im "Über mich")
+   ------------------------------------------------------------- */
+.weather {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--muted);
+}
+
+.weather-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+
+/* -------------------------------------------------------------
+   NEU: MEIN HAMBURG (Foto + Karte)
+   ------------------------------------------------------------- */
+
+/* Raster: auf dem Handy 1 Spalte (Foto über Karte) */
+.hamburg-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* Beide Karten sind innen ein Flex-Container von oben nach unten,
+   damit Bild bzw. Karte den freien Platz ausfüllen können. */
+.photo-card,
+.map-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;                   /* Bild/Karte gehen bis an den Rand */
+  overflow: hidden;             /* Ecken des Bildes werden mit abgerundet */
+}
+
+.photo-card img {
+  display: block;
+  width: 100%;
+  height: 240px;                /* Handy: feste Höhe */
+  object-fit: cover;            /* Bild füllt die Fläche, ohne verzerrt zu werden */
+  transition: transform 0.5s ease;
+}
+
+/* Kleiner Zoom-Effekt beim Drüberfahren */
+.photo-card:hover img {
+  transform: scale(1.03);
+}
+
+/* Bildunterschrift unter dem Foto */
+.photo-card figcaption,
+.map-caption {
+  padding: 0.9rem 1.25rem;
+  font-size: 0.875rem;
+  border-top: 1px solid var(--border);
+  background-color: var(--card);
+  position: relative;           /* liegt über dem gezoomten Bild */
+}
+
+.photo-credit {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.photo-credit a {
+  text-decoration: underline;
+}
+
+.map-caption {
+  color: var(--muted-foreground);
+}
+
+/* Die Karte selbst. WICHTIG: Leaflet braucht eine feste Höhe,
+   sonst ist die Karte 0 Pixel hoch und unsichtbar! */
+.map {
+  flex: 1;
+  min-height: 300px;
+  /* Eigene "Ebene" für die Karte. Ohne diese zwei Zeilen würde die Karte
+     beim Scrollen ÜBER dem Sticky-Header liegen, weil Leaflet intern
+     sehr hohe z-index-Werte benutzt. */
+  position: relative;
+  z-index: 0;
+}
+
+/* Dunkelmodus: Karte farblich umdrehen, damit sie zum dunklen Design passt.
+   invert = Farben umkehren, hue-rotate = Farbtöne zurückdrehen
+   (sonst wäre das Wasser orange statt blau). */
+[data-theme="dark"] .map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
+
+/* Leaflet-Popups an unser Design anpassen */
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Ab 768px: Foto und Karte nebeneinander, gleich hoch */
+@media (min-width: 768px) {
+  .hamburg-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .photo-card img {
+    flex: 1;                    /* Bild wächst mit, bis es so hoch ist wie die Karte */
+    height: auto;
+    min-height: 280px;
+  }
+
+  .map {
+    min-height: 340px;
+  }
+}
+
+
+/* -------------------------------------------------------------
+   7. FUSSBEREICH (Footer)
+   ------------------------------------------------------------- */
+.site-footer {
+  margin-top: 2rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;       /* Handy: untereinander */
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.footer-inner .btn {
+  color: var(--foreground);
+}
+
+
+/* -------------------------------------------------------------
+   8. EINBLEND-ANIMATION BEIM SCROLLEN
+   Startzustand: unsichtbar und etwas nach unten verschoben.
+   script.js fügt die Klasse "visible" hinzu → Element erscheint.
+   ------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Manche Menschen haben Animationen im System ausgeschaltet –
+   das respektieren wir und zeigen alles sofort an. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .card, .btn, .skill-fill { transition: none; }
+}
+
+
+/* -------------------------------------------------------------
+   9. GRÖSSERE BILDSCHIRME (Media Queries)
+   Alles oben gilt fürs Handy. Hier passen wir es für
+   breitere Bildschirme an ("mobile first").
+   ------------------------------------------------------------- */
+
+/* Ab 640px Breite (große Handys quer / Tablets) */
+@media (min-width: 640px) {
+  .hobby-grid {
+    grid-template-columns: repeat(2, 1fr);   /* 2 Spalten */
+  }
+
+  .about-card {
+    flex-direction: row;                     /* Avatar neben dem Text */
+    padding: 2rem;
+  }
+
+  .footer-inner {
+    flex-direction: row;                     /* Footer nebeneinander */
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+/* Ab 768px Breite (Tablets / Laptops) */
+@media (min-width: 768px) {
+  /* Navigation immer sichtbar, nebeneinander im Header */
+  .nav {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    gap: 0.25rem;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  /* Hamburger-Knopf wird nicht mehr gebraucht */
+  .menu-toggle {
+    display: none;
+  }
+
+  .hero {
+    padding: 6rem 0 4rem;
+  }
+
+  .section {
+    padding: 4rem 0;
+  }
+}
+
+/* Ab 900px Breite (Desktop) */
+@media (min-width: 900px) {
+  .hobby-grid {
+    grid-template-columns: repeat(3, 1fr);   /* 3 Spalten */
+  }
+}
