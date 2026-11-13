@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<!-- lang="de" sagt dem Browser (und Screenreadern), dass die Seite auf Deutsch ist -->
+<html lang="de">
+<head>
+  <!-- Zeichensatz: sorgt dafür, dass Umlaute (ä, ö, ü) und Emojis richtig angezeigt werden -->
+  <meta charset="UTF-8">
+
+  <!-- Viewport: WICHTIG für Handys! Ohne diese Zeile würde die Seite auf dem Handy winzig aussehen -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Der Titel erscheint oben im Browser-Tab -->
+  <title>Don Maik – Persönliche Webseite</title> <!-- HIER ANPASSEN -->
+
+  <!-- Schriftart "Inter" von Google Fonts laden (das ist die typische shadcn-Schrift) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet: eine kostenlose Bibliothek für interaktive Karten (leafletjs.com).
+       "integrity" ist eine Prüfsumme: Der Browser lädt die Datei nur, wenn sie
+       unverändert ist. Das schützt vor manipulierten Dateien. -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Unsere eigene CSS-Datei mit dem ganzen Design einbinden.
+       Sie steht NACH Leaflet, damit unsere Regeln Vorrang haben. -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet-JavaScript (muss VOR script.js geladen werden, weil wir es dort benutzen) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+
+  <!-- Unsere JavaScript-Datei einbinden.
+       "defer" bedeutet: Das Skript wird erst ausgeführt, wenn die ganze Seite geladen ist.
+       Mehrere "defer"-Skripte laufen in der Reihenfolge, in der sie hier stehen. -->
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       SCROLL-FORTSCHRITTSBALKEN
+       Eine dünne Linie ganz oben, die beim Scrollen wächst.
+       Die Breite wird in script.js berechnet.
+       ========================================================= -->
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- =========================================================
+       KOPFBEREICH (Header)
+       Bleibt beim Scrollen oben kleben ("sticky").
+       ========================================================= -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <!-- Logo / Name links oben. Klick darauf springt nach ganz oben (#top) -->
+      <a href="#top" class="logo">Don Maik</a> <!-- HIER ANPASSEN -->
+
+      <!-- Navigation: Links zu den einzelnen Abschnitten -->
+      <nav class="nav" id="nav" aria-label="Hauptnavigation">
+        <a href="#ueber-mich">Über mich</a>
+        <a href="#skills">Skills</a>
+        <a href="#hamburg">Hamburg</a>
+        <a href="#hobbys">Hobbys</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+
+      <!-- Rechte Seite: Buttons für Dunkelmodus und Handy-Menü -->
+      <div class="header-actions">
+        <!-- Knopf zum Umschalten zwischen hellem und dunklem Design -->
+        <button class="btn btn-ghost btn-icon" id="theme-toggle" type="button" aria-label="Hell/Dunkel umschalten">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+
+        <!-- Hamburger-Menü (☰): nur auf dem Handy sichtbar -->
+        <button class="btn btn-ghost btn-icon menu-toggle" id="menu-toggle" type="button"
+                aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- <main> enthält den Hauptinhalt der Seite -->
+  <main id="top">
+
+    <!-- =========================================================
+         HERO-BEREICH (großer Begrüßungsbereich mit Namen)
+         ========================================================= -->
+    <section class="hero">
+      <div class="container">
+        <!-- Kleines "Badge" (Etikett) über dem Namen -->
+        <span class="badge">Hallo 👋 Willkommen auf meiner Seite</span>
+
+        <!-- h1 = wichtigste Überschrift der Seite (sollte nur einmal vorkommen) -->
+        <h1 class="hero-title">Ich bin <span class="highlight">Don Maik</span></h1> <!-- HIER ANPASSEN -->
+
+        <!-- Kurzer Untertitel -->
+        <p class="hero-text">
+          Hobby-Fotograf, Naturfreund und angehender Webentwickler. <!-- HIER ANPASSEN -->
+          Hier erfährst du ein bisschen mehr über mich.
+        </p>
+
+        <!-- Zwei Buttons im shadcn-Stil -->
+        <div class="hero-buttons">
+          <a href="#ueber-mich" class="btn btn-primary">Mehr über mich</a>
+          <a href="#kontakt" class="btn btn-outline">Kontakt</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ABSCHNITT: ÜBER MICH
+         Die Klasse "reveal" sorgt dafür, dass der Abschnitt beim
+         Scrollen sanft eingeblendet wird (siehe script.js).
+         ========================================================= -->
+    <section class="section reveal" id="ueber-mich">
+      <div class="container">
+        <h2 class="section-title">Über mich</h2>
+        <p class="section-subtitle">Ein paar Worte zu meiner Person.</p>
+
+        <!-- Eine "Card" (Karte) mit Avatar und Text -->
+        <div class="card about-card">
+          <!-- Avatar: ein Kreis mit meinen Initialen -->
+          <div class="avatar" aria-hidden="true">MM</div> <!-- HIER ANPASSEN -->
+
+          <div>
+            <!-- HIER ANPASSEN: Schreibe hier etwas über dich -->
+            <p>
+              Hi! Ich heiße Maik, bin 35 Jahre alt und lebe in Takatukaland. Tagsüber arbeite ich
+              als Projektmanager, abends lerne ich programmieren – diese Webseite ist mein
+              erstes eigenes Projekt.
+            </p>
+            <p>
+              Ich mag gutes Design, lange Spaziergänge und neue Dinge auszuprobieren.
+            </p>
+
+            <!-- Kleine Badges mit Infos -->
+            <div class="badge-list">
+              <span class="badge">📍 Hamburg-Barmbek</span>
+              <span class="badge">💼 Projektmanager</span>
+              <span class="badge">💻 Lerne HTML, CSS &amp; JS</span>
+            </div>
+
+            <!-- LIVE-WETTER
+                 Der Text wird von script.js ersetzt, sobald die Wetterdaten
+                 aus dem Internet geladen sind. Die Stadt stellst du
+                 ganz oben in script.js ein. -->
+            <div class="weather" id="weather">
+              <span class="weather-icon" id="weather-icon">⏳</span>
+              <span id="weather-text">Wetter wird geladen …</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ABSCHNITT: MEINE SKILLS (Fähigkeiten mit Balken)
+         Jeder Balken bekommt seinen Wert über style="--level: 70%".
+         Sobald der Abschnitt sichtbar wird, füllen sich die Balken
+         (gesteuert durch die Klasse "visible", siehe style.css).
+         ========================================================= -->
+    <section class="section reveal" id="skills">
+      <div class="container">
+        <h2 class="section-title">Meine Skills</h2>
+        <p class="section-subtitle">Was ich schon kann – und woran ich noch arbeite.</p>
+
+        <div class="card skills-card">
+
+          <!-- Skill 1 – HIER ANPASSEN (Name und Prozentzahl an BEIDEN Stellen) -->
+          <div class="skill">
+            <div class="skill-header">
+              <span>Projektmanagement</span>
+              <span class="skill-percent">90 %</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="--level: 90%"></div>
+            </div>
+          </div>
+
+          <!-- Skill 2 – HIER ANPASSEN -->
+          <div class="skill">
+            <div class="skill-header">
+              <span>HTML</span>
+              <span class="skill-percent">60 %</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="--level: 60%"></div>
+            </div>
+          </div>
+
+          <!-- Skill 3 – HIER ANPASSEN -->
+          <div class="skill">
+            <div class="skill-header">
+              <span>CSS</span>
+              <span class="skill-percent">45 %</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="--level: 45%"></div>
+            </div>
+          </div>
+
+          <!-- Skill 4 – HIER ANPASSEN -->
+          <div class="skill">
+            <div class="skill-header">
+              <span>JavaScript</span>
+              <span class="skill-percent">25 %</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" style="--level: 25%"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ABSCHNITT: MEIN HAMBURG (Foto + Karte nebeneinander)
+         Auf dem Handy stehen Foto und Karte untereinander.
+         ========================================================= -->
+    <section class="section reveal" id="hamburg">
+      <div class="container">
+        <h2 class="section-title">Mein Hamburg</h2>
+        <p class="section-subtitle">Die schönste Stadt der Welt – zumindest für mich.</p>
+
+        <div class="hamburg-grid">
+
+          <!-- Karte 1: Foto
+               <figure> ist ein Behälter für ein Bild mit Bildunterschrift (<figcaption>). -->
+          <figure class="card photo-card">
+            <!-- alt="…" beschreibt das Bild für Blinde und falls es nicht lädt.
+                 loading="lazy" lädt das Bild erst, wenn man in die Nähe scrollt. -->
+            <img src="bilder/hamburg-speicherstadt.jpg"
+                 alt="Das Wasserschloss in der Hamburger Speicherstadt, gesehen durch die Stahlträger einer Brücke"
+                 width="1280" height="853" loading="lazy">
+
+            <figcaption>
+              <strong>Speicherstadt mit Wasserschloss</strong>
+              <!-- WICHTIG: Das Foto steht unter einer freien Lizenz (CC BY-SA 4.0).
+                   Diese verlangt, dass Fotograf und Lizenz genannt werden.
+                   Diese Zeile also bitte NICHT löschen. -->
+              <span class="photo-credit">
+                Foto: Dietmar Rabich,
+                <a href="https://commons.wikimedia.org/wiki/File:Hamburg,_Speicherstadt,_Wasserschloss_--_2016_--_2944-50.jpg"
+                   target="_blank" rel="noopener">Wikimedia Commons</a>,
+                <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de"
+                   target="_blank" rel="noopener">CC BY-SA 4.0</a>
+              </span>
+            </figcaption>
+          </figure>
+
+          <!-- Karte 2: Interaktive Karte
+               Das leere <div id="map"> wird von script.js mit der Karte gefüllt. -->
+          <div class="card map-card">
+            <div class="map" id="map" role="region" aria-label="Interaktive Karte von Hamburg"></div>
+            <p class="map-caption">📍 Hier wohne ich: Barmbek-Nord · Ziehen &amp; Zoomen erlaubt</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ABSCHNITT: MEINE HOBBYS (drei Karten)
+         ========================================================= -->
+    <section class="section reveal" id="hobbys">
+      <div class="container">
+        <h2 class="section-title">Meine Hobbys</h2>
+        <p class="section-subtitle">Womit ich meine Freizeit am liebsten verbringe.</p>
+
+        <!-- Das Raster ("Grid") ordnet die Karten nebeneinander an.
+             Auf dem Handy stehen sie untereinander. -->
+        <div class="hobby-grid">
+
+          <!-- Karte 1 – HIER ANPASSEN -->
+          <article class="card hobby-card">
+            <div class="hobby-icon" aria-hidden="true">📷</div>
+            <h3>Fotografie</h3>
+            <p>Ich halte gerne besondere Momente fest – am liebsten Landschaften und Streetfotografie.</p>
+          </article>
+
+          <!-- Karte 2 – HIER ANPASSEN -->
+          <article class="card hobby-card">
+            <div class="hobby-icon" aria-hidden="true">🥾</div>
+            <h3>Wandern</h3>
+            <p>Raus in die Natur! Am Wochenende bin ich oft in den Bergen oder im Wald unterwegs.</p>
+          </article>
+
+          <!-- Karte 3 – HIER ANPASSEN -->
+          <article class="card hobby-card">
+            <div class="hobby-icon" aria-hidden="true">🍳</div>
+            <h3>Kochen</h3>
+            <p>Ich probiere gerne neue Rezepte aus aller Welt aus – besonders italienisch und asiatisch.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       FUSSBEREICH (Footer)
+       ========================================================= -->
+  <footer class="site-footer" id="kontakt">
+    <div class="container footer-inner">
+      <!-- Die Jahreszahl wird automatisch per JavaScript eingesetzt (span mit id="year") -->
+      <p>© <span id="year"></span> Don Maik. Alle Rechte vorbehalten.</p> <!-- HIER ANPASSEN -->
+
+      <!-- "mailto:" öffnet beim Klick das E-Mail-Programm -->
+      <a href="mailto:Maik@beispiel.de" class="btn btn-outline btn-sm">✉️ Schreib mir</a> <!-- HIER ANPASSEN -->
+    </div>
+  </footer>
+
+</body>
+</html>

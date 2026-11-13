@@ -1,0 +1,7 @@
+# .gitignore – Dateien, die Git NICHT speichern und hochladen soll
+
+# Unsichtbare Systemdatei von macOS (speichert Ordner-Ansichten im Finder)
+.DS_Store
+
+# Einstellungen von VS Code (nur für deinen Computer wichtig)
+.vscode/
